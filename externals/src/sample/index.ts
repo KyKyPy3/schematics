@@ -17,19 +17,19 @@ export function sample(options: any): Rule {
     externalSchematic('@schematics/angular', 'component', options),
     (tree: Tree, _context: SchematicContext) => {
       tree.actions.forEach(({ path }) => {
-            if (!path.endsWith('.ts')) {
-              return;
-            }
+        if (!path.endsWith('.ts')) {
+          return;
+        }
 
-            const content = tree.read(path);
-            if (!content) {
-              return;
-            }
+        const content = tree.read(path);
+        if (!content) {
+          return;
+        }
 
-            if (content.indexOf(licenseText) === -1) {
-              tree.overwrite(path, licenseText + content);
-            }
-        });
+        if (content.indexOf(licenseText) === -1) {
+          tree.overwrite(path, licenseText + content);
+        }
+      });
 
       return tree;
     }
