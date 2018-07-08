@@ -16,8 +16,8 @@ export function sample(options: any): Rule {
   return chain([
     externalSchematic('@schematics/angular', 'component', options),
     (tree: Tree, _context: SchematicContext) => {
-      tree.actions.forEach(({ path }) => {
-        if (!path.endsWith('.ts')) {
+      tree.actions.forEach(({ path, kind }) => {
+        if (!path.endsWith('.ts') || kind !== 'c') {
           return;
         }
 
