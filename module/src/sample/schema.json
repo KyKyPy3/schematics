@@ -1,0 +1,28 @@
+{
+    "$scheme": "http://json-schema.org/schema",
+    "id": "SampleSchematicsSchema",
+    "title": "My Sample Schematics Schema",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Service name",
+            "$default": {
+                "$source": "argv",
+                "index": 0
+            }
+        },
+        "path": {
+            "type": "string",
+            "format": "path",
+            "description": "The path to create the service.",
+            "visible": false
+        },
+        "spec": {
+            "type": "boolean",
+            "description": "Should we create spec file.",
+            "default": false
+        }
+    },
+    "required": []
+}
