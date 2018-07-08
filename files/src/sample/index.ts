@@ -1,4 +1,6 @@
-import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { Rule, SchematicContext, Tree, SchematicsException, apply, url, 
+         chain, branchAndMerge, mergeWith, noop, filter, template, move } from '@angular-devkit/schematics';
+import { strings } from '@angular-devkit/core';
 
 import { Schema } from './schema';
 
@@ -6,17 +8,27 @@ import { Schema } from './schema';
 // per file.
 export function sample(options: Schema): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    const name = options.name || 'hello';
-
-    tree.create(name, 'Hello World');
-
-    if (!options.quiet) {
-      const data = tree.read(name);
-      if (data) {
-        context.logger.info((data as Buffer).toString());
-      }
+    if (!options.name) {
+      throw new SchematicsException('Name is required.');
     }
 
-    return tree;
+    const templateSource = apply(url('./files'), [
+      options.spec ? noop() : filter(path => !path.endsWith('.spec.ts')),
+      template({
+        ...strings,
+        ...options
+      }),
+      move(options.path || '')
+    ]);
+
+    const rule = chain([
+      branchAndMerge(
+        chain([
+          mergeWith(templateSource)
+        ])
+      )
+    ]);
+
+    return rule(tree, context);
   };
 }

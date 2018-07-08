@@ -2,6 +2,10 @@ export interface Schema {
 
     name: string;
 
-    quiet?: boolean;
+    path?: string;
+
+    spec?: boolean;
+
+    type?: string;
 
 }

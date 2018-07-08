@@ -12,11 +12,21 @@
                 "index": 0
             }
         },
-        "quiet": {
+        "path": {
+            "type": "string",
+            "format": "path",
+            "description": "The path to create the class.",
+            "visible": false
+        },
+        "type": {
+            "type": "string",
+            "description": "Specifies the type of class.",
+            "default": ""
+        },
+        "spec": {
             "type": "boolean",
-            "description": "Should we see logging.",
-            "default": false,
-            "alias": "q"
+            "description": "Should we create spec file.",
+            "default": false
         }
     },
     "required": []
