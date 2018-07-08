@@ -1,0 +1,23 @@
+{
+    "$scheme": "http://json-schema.org/schema",
+    "id": "SampleSchematicsSchema",
+    "title": "My Sample Schematics Schema",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "User name",
+            "$default": {
+                "$source": "argv",
+                "index": 0
+            }
+        },
+        "quiet": {
+            "type": "boolean",
+            "description": "Should we see logging.",
+            "default": false,
+            "alias": "q"
+        }
+    },
+    "required": []
+}
