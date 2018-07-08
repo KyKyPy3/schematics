@@ -6,6 +6,4 @@ export interface Schema {
 
     spec?: boolean;
 
-    type?: string;
-
 }

@@ -6,7 +6,7 @@
     "properties": {
         "name": {
             "type": "string",
-            "description": "User name",
+            "description": "Service name",
             "$default": {
                 "$source": "argv",
                 "index": 0
@@ -15,13 +15,8 @@
         "path": {
             "type": "string",
             "format": "path",
-            "description": "The path to create the class.",
+            "description": "The path to create the service.",
             "visible": false
-        },
-        "type": {
-            "type": "string",
-            "description": "Specifies the type of class.",
-            "default": ""
         },
         "spec": {
             "type": "boolean",
