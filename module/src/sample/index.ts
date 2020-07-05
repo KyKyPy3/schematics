@@ -1,8 +1,7 @@
-import { Rule, SchematicContext, Tree, SchematicsException, apply, url, 
+import { Rule, Tree, SchematicsException, apply, url, 
          chain, branchAndMerge, mergeWith, noop, filter, template, move } from '@angular-devkit/schematics';
 import { strings } from '@angular-devkit/core';
-import { getWorkspace } from '@schematics/angular/utility/config';
-import { buildDefaultPath } from '@schematics/angular/utility/project';
+import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 import { parseName } from '@schematics/angular/utility/parse-name';
 import { buildRelativePath, findModuleFromOptions } from '@schematics/angular/utility/find-module';
 import { addProviderToModule } from '@schematics/angular/utility/ast-utils';
@@ -50,22 +49,22 @@ function addProviderToNgModule(options: any): Rule {
 }
 
 export function sample(options: any): Rule {
-  return (tree: Tree, context: SchematicContext) => {
+  return async (host: Tree) => {
     if (!options.name) {
       throw new SchematicsException('Name is required.');
     }
 
-    const workspace = getWorkspace(tree);
+    const workspace = await getWorkspace(host);
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
     }
-    const project = workspace.projects[options.project];
+    const project = workspace.projects.get(options.project as string);
 
-    if (options.path === undefined) {
+    if (options.path === undefined && project) {
       options.path = buildDefaultPath(project);
     }
 
-    options.module = findModuleFromOptions(tree, options);
+    options.module = findModuleFromOptions(host, options);
 
     const parsedPath = parseName(options.path, options.name);
     options.name = parsedPath.name;
@@ -80,15 +79,13 @@ export function sample(options: any): Rule {
       move(options.path || '')
     ]);
 
-    const rule = chain([
+    return chain([
       branchAndMerge(
         chain([
-          addProviderToNgModule(options),
-          mergeWith(templateSource)
+          mergeWith(templateSource),
+          addProviderToNgModule(options)
         ])
       )
     ]);
-
-    return rule(tree, context);
   };
 }
