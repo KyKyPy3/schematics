@@ -82,8 +82,8 @@ export function sample(options: any): Rule {
     return chain([
       branchAndMerge(
         chain([
+          addProviderToNgModule(options),
           mergeWith(templateSource),
-          addProviderToNgModule(options)
         ])
       )
     ]);
